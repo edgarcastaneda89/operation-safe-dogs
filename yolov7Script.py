@@ -23,6 +23,8 @@ def getBoxes():
 
         dogDetected = False
 
+        # test commit
+
         for cls, bbox in zip(classes, bboxes):
             x, y, x2, y2 = bbox
 
