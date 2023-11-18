@@ -3,10 +3,19 @@ import numpy as np
 from ultralytics import YOLO
 import torch
 
+#TODO create a function that tries to open the camera
+
 def getBoxes():
     try:
         # Open the video file
-        video1 = cv2.VideoCapture("dogsOne.mp4")
+        # RTSP stream URL
+        rtsp_url = 'rtsp://admin:Telo1205@192.168.0.91:554/cam/realmonitor?channel=1&subtype=0'
+
+        # Create a VideoCapture object for the RTSP stream
+        video1 = cv2.VideoCapture(rtsp_url)
+
+
+
         model = YOLO("yolov8m.pt")
     except: 
         print("Video source not found!")
@@ -30,7 +39,6 @@ def getBoxes():
             cv2.rectangle(frame, (x, y), (x2, y2), (0, 0, 225), 2)
             cv2.putText(frame, str(cls), (x, y - 5), cv2.FONT_HERSHEY_PLAIN, 1, (0, 0, 225), 2)
 
-            #TODO  have to change the "Dogs is out to happen every second. Because if not will it spit out hundreds of strings when seeing one?"
             # Check if dogs are detected
             if cls == 16:
                 dogDetected = True
@@ -39,8 +47,9 @@ def getBoxes():
         # Box coordinates (x, y, x2, y2) being printed
         print(bboxes)
 
+        # Adjust frames 
         cv2.imshow("Img", frame)
-        key = cv2.waitKey(0)
+        key = cv2.waitKey(20)
 
         # Prints classes
         print(classes)
